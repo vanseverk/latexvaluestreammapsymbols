@@ -1,0 +1,38 @@
+%!TeX root = main.tex
+\begin{figure}[p]
+    \centering
+    \rotatebox{270}{%
+        \resizebox{0.92\textheight}{!}{%
+            \begin{tikzpicture}[font=\small]
+                \vsmIndustry[Cedar supply]{0,5}
+                \vsmInventory[Cedar stock]{0.25,0}{Cedar logs:\\14\,672 pcs}
+                \vsmProcess[Log milling]{3.25,0}{Log milling}{Cutting cedar\\logs into slats}[][8]
+                \vsmDataBox[Cedar data]{Log milling}{P/T: 30 seconds|C/T: 5 seconds\\per slat}
+                \vsmInventory[Slat buffer]{6.25,0}{Slats:\\232 pcs}
+                \vsmProcess[Board forming]{9.25,0}{Board forming}{Blend fiber\\and slats}[][8]
+                \vsmDataBox[BoardData]{Board forming}{P/T: 180 seconds|C/T: 30 seconds\\per board}
+                \vsmInventory[Board stock]{12.25,0}{Boards:\\202 pcs}
+                \vsmProcess[Assembly kit production]{15.25,0}{Assembly kit production}{Assemble boards\\and fasteners}[][8]
+                \vsmDataBox[Assembly kit production data]{Assembly kit production}{P/T: 240 seconds|Output: 3 items|C/T: 10 seconds}
+                \vsmInventory[Kit buffer]{18.25,0}{Kits:\\7\,004 pcs}
+                \vsmProcess[Shipping]{21.25,0}{Shipping}{\\}[][1]
+                \vsmIndustry[Customer]{21.50,5}
+                \vsmProcess[Production Planning]{10,5}{Production Planning}{}[][1]
+
+                \vsmDeliveryArrow{Cedar supply.south}{Cedar stock.north}
+                \vsmPushArrow{Cedar stock.east}{Log milling.west}
+                \vsmPushArrow{Log milling.east}{Slat buffer.west}
+                \vsmPushArrow{Slat buffer.east}{Board forming.west}
+                \vsmPushArrow{Board forming.east}{Board stock.west}
+                \vsmPushArrow{Board stock.east}{Assembly kit production.west}
+                \vsmPushArrow{Assembly kit production.east}{Kit buffer.west}
+                \vsmPushArrow{Kit buffer.east}{Shipping.west}
+                \vsmDeliveryArrow{Shipping.north}{Customer.south}
+                \vsmElectronicInformationFlow[][Push continuously]{Production Planning.west}{Cedar supply.east}
+                \vsmLeadTimeLadder{inventorybox/Cedar stock/297071 seconds,processbox/Log milling/30 seconds,inventorybox/Slat buffer/783 seconds,processbox/Board forming/180 seconds,inventorybox/Board stock/1363 seconds,processbox/Assembly kit production/240 seconds,inventorybox/Kit buffer/31518 seconds}{331185 seconds}{450 seconds}
+            \end{tikzpicture}%
+        }%
+    }
+    \caption{Current-state value stream for the cedar-to-kit flow.}
+    \label{fig:vsm-current}
+\end{figure}

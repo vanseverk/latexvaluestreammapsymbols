@@ -1,0 +1,38 @@
+%!TeX root = main.tex
+\begin{figure}[p]
+    \centering
+    \rotatebox{270}{%
+        \resizebox{0.92\textheight}{!}{%
+            \begin{tikzpicture}[font=\small]
+                \vsmIndustry[Cedar supply]{0,8}
+                \vsmSupermarket[Cedar stock]{0.25,0}{cedar logs}
+                \vsmDataBox[Cedar stock data]{Cedar stock}{Stock cap:\\444 items}
+                \vsmProcess[Log to board]{6,0}{Log to board}{Cutting cedar logs\\into slats and\\forming boards}[][5]
+                \vsmDataBox[Board process data]{Log to board}{P/T: 210 seconds|C/T: 36 seconds\\per board}
+                \vsmProcess[Assembly kit production]{12,0}{Assembly kit production}{Combine boards\\and fasteners}[][18]
+                \vsmDataBox[Assembly kit data]{Assembly kit production}{P/T: 240 seconds|C/T: 13.4 seconds\\per kit}
+                \vsmInventory[Kit buffer]{16,0}{Kits:\\16\,000 pcs}
+                \vsmProcess[Shipping]{19.5,0}{Shipping}{\\}[][1]
+                \vsmIndustry[Customer]{19.75,8}
+                \vsmProcess[Production Planning]{12.5,8}{Production Planning}{}[][1]
+
+                \vsmDeliveryArrow[][deliver 370 items]{Cedar supply.south}{Cedar stock.north}
+                \vsmFIFOArrow[Cedar stock FIFO]{Cedar stock.east}{Log to board.west}{62}
+                \vsmFIFOArrow[Board FIFO]{Log to board.east}{Assembly kit production.west}{228}
+                \vsmConveyor[Assembly to buffer]{Assembly kit production.east}{Kit buffer.west}
+                \vsmPushArrow{Kit buffer.east}{Shipping.west}
+                \vsmDeliveryArrow[][Shipping after\\72000 seconds (2 days)]{Shipping.north}{Customer.south}
+                \vsmElectronicInformationFlow[][2-day schedule (16\,000 kits)]{Production Planning.west}{Log to board.east}
+                \vsmElectronicInformationFlow[][Start refilling at 266 logs]{Cedar stock.north}{Cedar supply.south}
+                \vsmLeadTimeLadder{inventorybox/Cedar stock/8991 seconds,inventorybox/Cedar stock FIFO/1256 seconds,processbox/Log to board/210 seconds,inventorybox/Board FIFO/1539 seconds,processbox/Assembly kit production/240 seconds,inventorybox/Kit buffer/72000 seconds}{84141 seconds}{270 seconds}
+
+                \vsmKaizenBurst[DeliveryOnPull]{0,2}{Delivery\\On Pull}
+                \vsmKaizenBurst[DeliveryOnPullTarget]{6,-4}{C/T \ensuremath{\leq}\\40 seconds}
+                \vsmKaizenBurst[DeliveryOnPullTarget2]{12,-4}{C/T \ensuremath{\leq}\\40 seconds}
+                \vsmKaizenBurst[DeliveryOnPullTarget2]{6,2}{Planning at\\pacemaker}
+            \end{tikzpicture}%
+        }%
+    }
+    \caption{Future-state value stream for the cedar-to-kit flow.}
+    \label{fig:vsm-future-state}
+\end{figure}
